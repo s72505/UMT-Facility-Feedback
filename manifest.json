@@ -1,6 +1,6 @@
 {
-  "name": "UMT Facility Reporter",
-  "short_name": "UMTReporter",
+  "name": "UMT Facility Feedback",
+  "short_name": "UMTFeedback",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#2c3e50",
