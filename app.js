@@ -15,7 +15,6 @@ if ("serviceWorker" in navigator) {
 // DOM Elements
 const pages = document.querySelectorAll(".page");
 const navLinks = document.querySelectorAll(".nav-link");
-const homeCards = document.querySelectorAll(".home-card");
 const menuBtn = document.getElementById("menu-btn");
 const closeNavBtn = document.getElementById("close-nav-btn");
 const sideNav = document.getElementById("side-nav");
@@ -48,7 +47,7 @@ const reportDetailsModal = document.getElementById("report-details-modal");
 const reportDetailsContent = document.getElementById("report-details-content");
 
 // App State
-let currentPage = "home-view";
+let currentPage = "map-view";
 let currentLocation = null;
 let selectedImages = [];
 let reports = [];
@@ -60,20 +59,13 @@ function initApp() {
   setupEventListeners();
   initMap();
   loadReports();
+  checkGeolocation();
   checkPWAInstallPrompt();
 }
 
 // Set up event listeners
 function setupEventListeners() {
-  // Home page cards
-  homeCards.forEach((card) => {
-    card.addEventListener("click", () => {
-      const page = card.getAttribute("data-page");
-      navigateTo(page);
-    });
-  });
-
-  // Refresh map button
+  // In your setupEventListeners() function:
   document
     .getElementById("refresh-map-btn")
     .addEventListener("click", function () {
@@ -84,7 +76,6 @@ function setupEventListeners() {
         this.innerHTML = "🔄";
       }, 1000);
     });
-
   // Navigation
   menuBtn.addEventListener("click", toggleSideNav);
   closeNavBtn.addEventListener("click", toggleSideNav);
@@ -233,11 +224,7 @@ function navigateTo(page) {
   currentPage = page;
 
   // Special handling for certain pages
-  if (page === "map-view") {
-    // Invalidate map size to fix potential rendering issues
-    if (map) map.invalidateSize();
-    checkGeolocation();
-  } else if (page === "gallery") {
+  if (page === "gallery") {
     renderGallery();
   } else if (page === "my-reports") {
     renderReportsList();

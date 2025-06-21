@@ -156,61 +156,6 @@ body {
   }
 }
 
-/* Home View */
-#home-view {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  height: calc(100vh - 64px); /* Full height minus header */
-}
-
-#home-view h2 {
-    margin-bottom: 2rem;
-    font-size: 1.8rem;
-    color: var(--dark-color);
-}
-
-.home-card-container {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  width: 100%;
-  max-width: 400px;
-}
-
-.home-card {
-  background-color: white;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: var(--shadow);
-  cursor: pointer;
-  transition: var(--transition);
-  text-align: center;
-  flex: 1;
-}
-
-.home-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-}
-
-.home-card-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-}
-
-.home-card h3 {
-  color: var(--primary-color);
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.home-card p {
-  color: #7f8c8d;
-}
-
 /* Map View */
 #map {
   position: fixed;
@@ -571,11 +516,6 @@ body {
 
 /* Responsive */
 @media (min-width: 768px) {
-  .home-card-container {
-      flex-direction: row;
-      max-width: 800px;
-  }
-
   .app-header h1 {
     font-size: 1.8rem;
   }

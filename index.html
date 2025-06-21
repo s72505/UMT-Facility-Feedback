@@ -30,7 +30,7 @@
     <div class="app-container">
       <header class="app-header">
         <div class="header-left">
-          <button id="menu-btn">笘ｰ</button>
+          <button id="menu-btn">☰</button>
           <img src="icons/logo.png" alt="UMT Logo" class="app-logo" />
           <h1>UMT Facility Reporter</h1>
         </div>
@@ -40,10 +40,9 @@
         <button id="close-nav-btn">&times;</button>
         <ul>
           <li>
-            <a href="#" class="nav-link active" data-page="home-view">Home</a>
-          </li>
-          <li>
-            <a href="#" class="nav-link" data-page="map-view">Map View</a>
+            <a href="#" class="nav-link active" data-page="map-view"
+              >Map View</a
+            >
           </li>
           <li>
             <a href="#" class="nav-link" data-page="report-issue"
@@ -61,29 +60,15 @@
       </nav>
 
       <main class="main-content">
-        <div id="home-view" class="page active-page">
-          <h2>Welcome to UMT Facility Reporter</h2>
-          <div class="home-card-container">
-            <div class="home-card" data-page="report-issue">
-              <div class="home-card-icon">📝</div>
-              <h3>Make a Report</h3>
-              <p>Report a new facility issue.</p>
-            </div>
-            <div class="home-card" data-page="map-view">
-              <div class="home-card-icon">🗺️</div>
-              <h3>UMT Map</h3>
-              <p>View all reported issues on the map.</p>
-            </div>
-          </div>
-        </div>
-
-        <div id="map-view" class="page">
+        <!-- Map View -->
+        <div id="map-view" class="page active-page">
           <div id="map"></div>
-          <button id="current-location-btn" class="fab">桃</button>
-          <button id="refresh-map-btn" class="fab">売</button>
+          <button id="current-location-btn" class="fab">📍</button>
+          <button id="refresh-map-btn" class="fab">🔄</button>
           <button id="new-report-btn" class="fab primary">+</button>
         </div>
 
+        <!-- Report Issue -->
         <div id="report-issue" class="page">
           <h2>Report Facility Issue</h2>
           <form id="report-form">
@@ -112,10 +97,11 @@
             <div class="form-group">
               <label>Add Photos (Max 5)</label>
               <div class="image-preview-container" id="image-preview">
-                </div>
+                <!-- Images will appear here -->
+              </div>
               <div class="image-controls">
-                <button type="button" id="camera-btn">胴 Camera</button>
-                <button type="button" id="gallery-btn">名ｸGallery</button>
+                <button type="button" id="camera-btn">📷 Camera</button>
+                <button type="button" id="gallery-btn">🖼️ Gallery</button>
                 <input
                   type="file"
                   id="file-input"
@@ -137,6 +123,7 @@
           </form>
         </div>
 
+        <!-- My Reports -->
         <div id="my-reports" class="page">
           <h2>My Reports</h2>
           <div class="status-filter">
@@ -150,15 +137,19 @@
             <button class="filter-btn" data-status="resolved">Resolved</button>
           </div>
           <div id="reports-list" class="reports-list">
-            </div>
+            <!-- Reports will be dynamically added here -->
+          </div>
         </div>
 
+        <!-- Photo Gallery -->
         <div id="gallery" class="page">
           <h2>Photo Gallery</h2>
           <div id="gallery-container" class="gallery-container">
-            </div>
+            <!-- Gallery items will be added here -->
+          </div>
         </div>
 
+        <!-- About Page -->
         <div id="about" class="page">
           <h2>About UMT Facility Reporter</h2>
           <div class="about-content">
@@ -181,6 +172,7 @@
         </div>
       </main>
 
+      <!-- Camera Modal -->
       <div id="camera-modal" class="modal">
         <div class="modal-content">
           <span class="close-modal">&times;</span>
@@ -190,6 +182,7 @@
         </div>
       </div>
 
+      <!-- Location Selection Modal -->
       <div id="location-modal" class="modal">
         <div class="modal-content">
           <span class="close-modal">&times;</span>
@@ -199,6 +192,7 @@
         </div>
       </div>
 
+      <!-- Report Details Modal -->
       <div id="report-details-modal" class="modal">
         <div class="modal-content">
           <span class="close-modal">&times;</span>
