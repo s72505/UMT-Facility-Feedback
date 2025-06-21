@@ -47,7 +47,7 @@ const reportDetailsModal = document.getElementById("report-details-modal");
 const reportDetailsContent = document.getElementById("report-details-content");
 
 // App State
-let currentPage = "map-view";
+let currentPage = "landing-page";
 let currentLocation = null;
 let selectedImages = [];
 let reports = [];
@@ -88,6 +88,10 @@ function setupEventListeners() {
       toggleSideNav();
     });
   });
+
+  // Landing Page
+  document.getElementById("go-to-report").addEventListener("click", () => navigateTo("report-issue"));
+  document.getElementById("go-to-map").addEventListener("click", () => navigateTo("map-view"));
 
   // Map View
   newReportBtn.addEventListener("click", () => navigateTo("report-issue"));

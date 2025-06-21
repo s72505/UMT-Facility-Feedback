@@ -156,6 +156,51 @@ body {
   }
 }
 
+/* Landing Page */
+#landing-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--light-color); /* Match body background */
+}
+
+.landing-page-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 500px;
+  padding: 1rem;
+}
+
+.landing-card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+  cursor: pointer;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.landing-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  border-color: var(--primary-color);
+}
+
+.landing-card h3 {
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+}
+
+.landing-card p {
+  color: var(--dark-color);
+  font-size: 1rem;
+}
+
 /* Map View */
 #map {
   position: fixed;
