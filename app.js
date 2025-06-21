@@ -76,6 +76,7 @@ function setupEventListeners() {
         this.innerHTML = "🔄";
       }, 1000);
     });
+
   // Navigation
   menuBtn.addEventListener("click", toggleSideNav);
   closeNavBtn.addEventListener("click", toggleSideNav);
@@ -93,6 +94,9 @@ function setupEventListeners() {
   document.getElementById("go-to-report").addEventListener("click", () => navigateTo("report-issue"));
   document.getElementById("go-to-map").addEventListener("click", () => navigateTo("map-view"));
 
+  // Make logo a home button
+  document.getElementById("logo-btn").addEventListener("click", () => navigateTo("landing-page"));
+  
   // Map View
   newReportBtn.addEventListener("click", () => navigateTo("report-issue"));
   currentLocationBtn.addEventListener("click", centerMapOnUser);

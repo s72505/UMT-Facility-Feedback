@@ -49,6 +49,7 @@ body {
 .app-logo {
   height: 40px;
   margin-right: 1rem;
+  cursor: pointer;
 }
 
 .app-header h1 {
