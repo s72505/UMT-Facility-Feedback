@@ -593,20 +593,44 @@ body {
   box-shadow: var(--shadow);
   z-index: 1000;
   transform: translateY(150%);
-  transition: transform 0.3s ease;
+  transition: transform 0.4s ease-out;
 }
 
 #install-prompt.show {
   transform: translateY(0);
 }
 
-#install-prompt button {
+.install-prompt-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: 1rem;
+}
+
+#install-prompt button#install-btn {
   background-color: var(--primary-color);
   color: white;
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 4px;
   cursor: pointer;
+  font-weight: 500;
+}
+
+#install-prompt #close-prompt-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.8rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 0.5rem;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+#install-prompt #close-prompt-btn:hover {
+  opacity: 1;
 }
 
 /* Custom Map Marker Styles */

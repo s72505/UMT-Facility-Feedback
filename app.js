@@ -730,33 +730,52 @@ function checkPWAInstallPrompt() {
   let deferredPrompt;
 
   window.addEventListener("beforeinstallprompt", (e) => {
+    // Prevent the browser's default prompt
     e.preventDefault();
+
+    // If our custom prompt is already visible, do nothing
+    if (document.getElementById("install-prompt")) {
+      return;
+    }
+
+    // Store the event so it can be triggered later.
     deferredPrompt = e;
 
+    // Create our custom prompt
     const installPrompt = document.createElement("div");
     installPrompt.id = "install-prompt";
     installPrompt.innerHTML = `
-      <div>Install UMT Facility Reporter for better experience</div>
-      <button id="install-btn">Install</button>
+      <span>Install UMT Facility Reporter for a better experience</span>
+      <div class="install-prompt-actions">
+        <button id="install-btn">Install</button>
+        <button id="close-prompt-btn" aria-label="Close">&times;</button>
+      </div>
     `;
     document.body.appendChild(installPrompt);
 
+    // Animate the prompt into view
+    setTimeout(() => {
+      installPrompt.classList.add("show");
+    }, 100);
+
+    // Set up the install button
     document.getElementById("install-btn").addEventListener("click", () => {
-      deferredPrompt.prompt();
+      installPrompt.remove(); // Hide our prompt
+      deferredPrompt.prompt(); // Show the browser's install dialog
       deferredPrompt.userChoice.then((choiceResult) => {
         if (choiceResult.outcome === "accepted") {
-          console.log("User accepted install");
+          console.log("User accepted the install prompt");
         } else {
-          console.log("User dismissed install");
+          console.log("User dismissed the install prompt");
         }
         deferredPrompt = null;
-        installPrompt.remove();
       });
     });
 
-    setTimeout(() => {
-      installPrompt.classList.add("show");
-    }, 1000);
+    // Set up the close button
+    document.getElementById("close-prompt-btn").addEventListener("click", () => {
+      installPrompt.remove(); // Just remove our prompt
+    });
   });
 }
 
