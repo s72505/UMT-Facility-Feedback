@@ -96,6 +96,9 @@ function setupEventListeners() {
 
   // Make logo a home button
   document.getElementById("logo-btn").addEventListener("click", () => navigateTo("landing-page"));
+
+  // Make title a home button
+  document.getElementById("title-btn").addEventListener("click", () => navigateTo("landing-page"));
   
   // Map View
   newReportBtn.addEventListener("click", () => navigateTo("report-issue"));
