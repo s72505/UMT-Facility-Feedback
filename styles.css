@@ -167,10 +167,10 @@ body {
 
 .landing-page-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 1.5rem;
   width: 100%;
-  max-width: 500px;
+  max-width: 900px;
   padding: 1rem;
 }
 
@@ -183,6 +183,7 @@ body {
   cursor: pointer;
   text-align: center;
   border: 1px solid #ddd;
+  flex: 1;
 }
 
 .landing-card:hover {

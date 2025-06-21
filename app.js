@@ -93,13 +93,14 @@ function setupEventListeners() {
   // Landing Page
   document.getElementById("go-to-report").addEventListener("click", () => navigateTo("report-issue"));
   document.getElementById("go-to-map").addEventListener("click", () => navigateTo("map-view"));
+  document.getElementById("go-to-my-reports").addEventListener("click", () => navigateTo("my-reports"));
 
   // Make logo a home button
   document.getElementById("logo-btn").addEventListener("click", () => navigateTo("landing-page"));
 
   // Make title a home button
   document.getElementById("title-btn").addEventListener("click", () => navigateTo("landing-page"));
-  
+
   // Map View
   newReportBtn.addEventListener("click", () => navigateTo("report-issue"));
   currentLocationBtn.addEventListener("click", centerMapOnUser);
