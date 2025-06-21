@@ -157,11 +157,14 @@ body {
 }
 
 /* Landing Page */
-#landing-page {
+.page#landing-page.active-page {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--light-color); /* Match body background */
+}
+
+#landing-page {
+  background-color: var(--light-color);
 }
 
 .landing-page-container {

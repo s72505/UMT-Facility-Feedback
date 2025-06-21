@@ -215,7 +215,10 @@ function navigateTo(page) {
   pages.forEach((p) => p.classList.remove("active-page"));
 
   // Show selected page
-  document.getElementById(page).classList.add("active-page");
+  const targetPage = document.getElementById(page);
+  if (targetPage) {
+    targetPage.classList.add("active-page");
+  }
 
   // Update active nav link
   navLinks.forEach((link) => {
@@ -232,6 +235,11 @@ function navigateTo(page) {
     renderGallery();
   } else if (page === "my-reports") {
     renderReportsList();
+  } else if (page === "map-view" && map) {
+    // Add a small delay to ensure the map container is fully visible before resizing
+    setTimeout(function () {
+      map.invalidateSize();
+    }, 100);
   }
 }
 
