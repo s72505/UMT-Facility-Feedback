@@ -57,8 +57,8 @@ let stream = null;
 // Initialize the app
 function initApp() {
   setupEventListeners();
-  initMap();
   loadReports();
+  initMap();
   checkGeolocation();
   checkPWAInstallPrompt();
 }
