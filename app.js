@@ -88,7 +88,31 @@ function setupEventListeners() {
       navigateTo(page);
       toggleSideNav();
     });
+
+    // Handle click for the "current location" button inside the location modal
+  document.getElementById("modal-current-location-btn").addEventListener("click", () => {
+    if (navigator.geolocation) {
+      showToast("Finding your location...", "info");
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const userLocation = [position.coords.latitude, position.coords.longitude];
+          if (locationMap) {
+            locationMap.setView(userLocation, 18);
+            // Find the marker on the map and move it
+            locationMap.eachLayer((layer) => {
+              if (layer instanceof L.Marker) {
+                layer.setLatLng(userLocation);
+              }
+            });
+          }
+        },
+        (error) => {
+          showToast("Unable to get your location: " + error.message, "error");
+        }
+      );
+    }
   });
+});
 
   // Landing Page
   document.getElementById("go-to-report").addEventListener("click", () => navigateTo("report-issue"));
@@ -160,21 +184,43 @@ function initMap() {
 
 // Initialize location picker map
 function initLocationMap() {
-  const currentCenter = currentLocation || map.getCenter();
-  locationMap = L.map("location-map").setView(currentCenter, 18);
+  // If the map instance already exists, remove it before re-initializing
+  if (locationMap) {
+    locationMap.remove();
+    locationMap = null;
+  }
 
+  const defaultCenter = map.getCenter(); // Fallback to main map's center
+  let marker;
+
+  // Initialize map with a default view
+  locationMap = L.map("location-map").setView(defaultCenter, 16);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: "© OpenStreetMap contributors",
   }).addTo(locationMap);
 
-  let marker = L.marker(currentCenter, {
-    draggable: true,
-  }).addTo(locationMap);
+  // Add a draggable marker at the center
+  marker = L.marker(defaultCenter, { draggable: true }).addTo(locationMap);
 
-  if (!currentLocation) {
+  // Automatically try to get the user's location
+  if (navigator.geolocation) {
+    showToast("Finding your location...", "info");
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const userLocation = [position.coords.latitude, position.coords.longitude];
+        locationMap.setView(userLocation, 18);
+        marker.setLatLng(userLocation);
+      },
+      (error) => {
+        showToast("Could not find location. Please select manually.", "warning");
+        marker.bindPopup("Drag to select location").openPopup();
+      }
+    );
+  } else {
     marker.bindPopup("Drag to select location").openPopup();
   }
 
+  // Update marker position on map click
   locationMap.on("click", (e) => {
     marker.setLatLng(e.latlng);
   });

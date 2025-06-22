@@ -838,6 +838,19 @@ body {
   align-self: center;
 }
 
+/* This ensures the modal FAB is positioned relative to the modal content box */
+.modal-content {
+  position: relative;
+}
+
+/* Styles for the new "current location" button inside the modal */
+.modal-fab {
+  position: absolute;
+  bottom: 5rem; /* Position it above the confirm button */
+  right: 1.5rem;
+  z-index: 1000; /* Ensure it's on top of the map */
+}
+
 @keyframes strokeCircle {
   to {
     stroke-dashoffset: 0;
