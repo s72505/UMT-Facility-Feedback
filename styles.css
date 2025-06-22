@@ -851,6 +851,22 @@ body {
   z-index: 1000; /* Ensure it's on top of the map */
 }
 
+.camera-controls-overlay {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 10;
+}
+
+#switch-camera-btn {
+  background-color: rgba(44, 62, 80, 0.7);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  width: 45px;
+  height: 45px;
+  font-size: 1.5rem;
+}
+
 @keyframes strokeCircle {
   to {
     stroke-dashoffset: 0;

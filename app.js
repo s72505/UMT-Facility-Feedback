@@ -47,12 +47,14 @@ const reportDetailsModal = document.getElementById("report-details-modal");
 const reportDetailsContent = document.getElementById("report-details-content");
 
 // App State
-let currentPage = "landing-page";
+// let currentPage = "landing-page";
+let currentPage = "map-view";  
 let currentLocation = null;
 let selectedImages = [];
 let reports = [];
 let map, locationMap;
 let stream = null;
+let currentFacingMode = "user"; // Default to user-facing camera
 
 // Initialize the app
 function initApp() {
@@ -65,7 +67,6 @@ function initApp() {
 
 // Set up event listeners
 function setupEventListeners() {
-  // In your setupEventListeners() function:
   document
     .getElementById("refresh-map-btn")
     .addEventListener("click", function () {
@@ -127,13 +128,23 @@ function setupEventListeners() {
   // Make title a home button
   document.getElementById("title-btn").addEventListener("click", () => navigateTo("landing-page"));
 
+  // Add this new event listener for the switch camera button
+  document.getElementById("switch-camera-btn").addEventListener("click", () => {
+    // Toggle between 'user' and 'environment'
+    currentFacingMode = currentFacingMode === "user" ? "environment" : "user";
+    openCamera(currentFacingMode);
+  });
+  
   // Map View
   newReportBtn.addEventListener("click", () => navigateTo("report-issue"));
   currentLocationBtn.addEventListener("click", centerMapOnUser);
 
   // Report Form
   reportForm.addEventListener("submit", submitReport);
-  cameraBtn.addEventListener("click", openCamera);
+  cameraBtn.addEventListener("click", () => {
+    currentFacingMode = "user"; // Default to front camera when first opening
+    openCamera(currentFacingMode);
+  });
   galleryBtn.addEventListener("click", () => fileInput.click());
   fileInput.addEventListener("change", handleFileSelect);
   selectLocationBtn.addEventListener("click", openLocationPicker);
@@ -305,11 +316,25 @@ function toggleSideNav() {
 }
 
 // Open camera modal
-function openCamera() {
+function openCamera(facingMode = "user") {
+  // Stop any existing camera stream before starting a new one
+  if (stream) {
+    stream.getTracks().forEach((track) => {
+      track.stop();
+    });
+  }
+
+  const constraints = {
+    video: {
+      facingMode: { exact: facingMode },
+    },
+  };
+
+  // Show the modal immediately
   cameraModal.style.display = "flex";
 
   navigator.mediaDevices
-    .getUserMedia({ video: true })
+    .getUserMedia(constraints)
     .then((mediaStream) => {
       stream = mediaStream;
       cameraView.srcObject = stream;
@@ -317,9 +342,10 @@ function openCamera() {
     .catch((err) => {
       console.error("Error accessing camera:", err);
       showToast(
-        "Could not access the camera. Please check permissions.",
+        `Could not access ${facingMode} camera. It may not be available on this device.`,
         "error"
       );
+      // If one camera fails, don't just close the modal. The other might still work.
     });
 }
 
