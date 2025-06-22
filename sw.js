@@ -1,4 +1,4 @@
-const CACHE_NAME = "umt-facility-reporter-v13"; // Updated version to v12
+const CACHE_NAME = "umt-facility-reporter-v14"; // Updated version to v12
 const ASSETS_TO_CACHE = [
   "/",
   "/index.html",

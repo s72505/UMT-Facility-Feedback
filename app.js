@@ -796,12 +796,13 @@ function checkPWAInstallPrompt() {
     // Store the event so it can be triggered later.
     deferredPrompt = e;
 
-    // Create our custom prompt
+    // Create our custom prompt with a placeholder for the countdown
     const installPrompt = document.createElement("div");
     installPrompt.id = "install-prompt";
     installPrompt.innerHTML = `
       <span>Install UMT Facility Feedback Reporter for a better experience</span>
       <div class="install-prompt-actions">
+        <span class="prompt-countdown" id="prompt-countdown"></span>
         <button id="install-btn">Install</button>
         <button id="close-prompt-btn" aria-label="Close">&times;</button>
       </div>
@@ -813,10 +814,38 @@ function checkPWAInstallPrompt() {
       installPrompt.classList.add("show");
     }, 100);
 
+    const countdownEl = document.getElementById("prompt-countdown");
+    let countdown = 5;
+
+    // --- NEW: Countdown Timer Logic ---
+    const startCountdown = () => {
+      countdownEl.textContent = `(Closing in ${countdown}...)`;
+      const countdownInterval = setInterval(() => {
+        countdown--;
+        if (countdown > 0) {
+          countdownEl.textContent = `(Closing in ${countdown}...)`;
+        } else {
+          // When countdown finishes, clear the interval and remove the prompt
+          clearInterval(countdownInterval);
+          const promptEl = document.getElementById("install-prompt");
+          if (promptEl) {
+            promptEl.classList.remove("show");
+            setTimeout(() => promptEl.remove(), 500);
+          }
+        }
+      }, 1000); // Update every second
+
+      // Return the interval so we can clear it if a button is clicked
+      return countdownInterval;
+    };
+    
+    const countdownTimer = startCountdown(); // Start the countdown
+
     // Set up the install button
     document.getElementById("install-btn").addEventListener("click", () => {
-      installPrompt.remove(); // Hide our prompt
-      deferredPrompt.prompt(); // Show the browser's install dialog
+      clearInterval(countdownTimer); // Stop the timer
+      installPrompt.remove();
+      deferredPrompt.prompt();
       deferredPrompt.userChoice.then((choiceResult) => {
         if (choiceResult.outcome === "accepted") {
           console.log("User accepted the install prompt");
@@ -829,7 +858,8 @@ function checkPWAInstallPrompt() {
 
     // Set up the close button
     document.getElementById("close-prompt-btn").addEventListener("click", () => {
-      installPrompt.remove(); // Just remove our prompt
+      clearInterval(countdownTimer); // Stop the timer
+      installPrompt.remove();
     });
   });
 }

@@ -831,6 +831,13 @@ body {
   cursor: pointer;
 }
 
+.install-prompt-actions .prompt-countdown {
+  margin-right: 1rem;
+  font-size: 0.9em;
+  opacity: 0.8;
+  align-self: center;
+}
+
 @keyframes strokeCircle {
   to {
     stroke-dashoffset: 0;
