@@ -850,9 +850,6 @@ body {
   right: 1.5rem;
   z-index: 1000; /* Ensure it's on top of the map */
 }
-/* In styles.css */
-
-/* --- New Styles for Separated Camera Buttons --- */
 
 /* This is the container for the two buttons at the bottom */
 .camera-bottom-controls {
@@ -897,9 +894,9 @@ body {
   align-items: center;
   justify-content: center;
 }
-
-/* A shared hover effect for both buttons */
-.camera-bottom-controls button:hover {
+/* A shared hover effect for both buttons with correct specificity */
+.camera-bottom-controls #capture-btn:hover,
+.camera-bottom-controls #switch-camera-btn:hover {
   background-color: var(--secondary-color);
 }
 
