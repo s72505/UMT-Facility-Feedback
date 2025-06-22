@@ -291,6 +291,7 @@ function closeModal() {
 
 // Capture photo from camera
 function capturePhoto() {
+  // Check if the video stream has valid dimensions before proceeding
   if (!cameraView.videoWidth || !cameraView.videoHeight) {
     console.error("Camera view is not ready or has zero dimensions.");
     showToast("Camera is not ready, please try again.", "error");
@@ -302,23 +303,21 @@ function capturePhoto() {
   canvas.height = cameraView.videoHeight;
   context.drawImage(cameraView, 0, 0, canvas.width, canvas.height);
 
-  canvas.toBlob(
-    (blob) => {
-      // The check from the previous step is still useful as a fallback
-      if (!blob) {
-        console.error("Canvas to Blob conversion failed. The blob is null.");
-        showToast("Failed to capture photo. Please try again.", "error");
-        closeModal(); // Close the modal even if it fails
-        return;
-      }
+  // --- THIS IS THE NEW IMPLEMENTATION ---
+  // Directly get the data URL string from the canvas.
+  const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
 
-      const imageUrl = URL.createObjectURL(blob);
-      addImageToPreview(imageUrl);
-      closeModal();
-    },
-    "image/jpeg",
-    0.9
-  );
+  // Add a check to ensure the data URL was created successfully
+  if (!dataUrl || dataUrl === "data:,") {
+    console.error("Failed to create data URL from canvas.");
+    showToast("Failed to capture photo. Please try again.", "error");
+    closeModal();
+    return;
+  }
+
+  // Use the data URL to add the image to the preview
+  addImageToPreview(dataUrl);
+  closeModal();
 }
 
 // Handle file selection from gallery
