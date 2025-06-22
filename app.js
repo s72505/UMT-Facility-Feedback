@@ -298,6 +298,14 @@ function capturePhoto() {
 
   canvas.toBlob(
     (blob) => {
+      // Add this check to prevent the error
+      if (!blob) {
+        console.error("Canvas to Blob conversion failed. The blob is null.");
+        showToast("Failed to capture photo. Please try again.", "error");
+        closeModal(); // Close the modal even if it fails
+        return;
+      }
+
       const imageUrl = URL.createObjectURL(blob);
       addImageToPreview(imageUrl);
       closeModal();
