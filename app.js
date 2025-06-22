@@ -514,6 +514,11 @@ function loadReports() {
   }
 }
 
+// Saves the entire reports array to localStorage
+function updateAllReports() {
+  localStorage.setItem("umt-facility-reports", JSON.stringify(reports));
+}
+
 // Load reports onto the map
 function loadReportsOnMap() {
   // Clear existing markers first
@@ -708,6 +713,8 @@ function viewReportDetails(reportId) {
 
   const date = new Date(report.date);
 
+  // --- UPDATED PART ---
+  // The innerHTML now includes a form to update the status
   reportDetailsContent.innerHTML = `
     <div class="report-details">
       <h4>${report.title}</h4>
@@ -731,8 +738,44 @@ function viewReportDetails(reportId) {
           )
           .join("")}
       </div>
+
+      <div class="status-updater">
+        <hr>
+        <h4>Update Report Status (Demo)</h4>
+        <select id="status-selector">
+          <option value="submitted" ${
+            report.status === "submitted" ? "selected" : ""
+          }>Submitted</option>
+          <option value="in-progress" ${
+            report.status === "in-progress" ? "selected" : ""
+          }>In Progress</option>
+          <option value="resolved" ${
+            report.status === "resolved" ? "selected" : ""
+          }>Resolved</option>
+        </select>
+        <button id="update-status-button">Update</button>
+      </div>
     </div>
   `;
+
+  // Add an event listener for our new update button
+  document.getElementById("update-status-button").addEventListener("click", () => {
+      const newStatus = document.getElementById("status-selector").value;
+      
+      // Update the report object in the main 'reports' array
+      report.status = newStatus;
+      
+      // Save the entire updated array to localStorage
+      updateAllReports();
+      
+      // Re-render the reports list to show the change immediately
+      renderReportsList();
+      
+      // Close the modal and show a success message
+      closeModal();
+      showToast("Report status updated successfully!", "success");
+    });
+
 
   reportDetailsModal.style.display = "flex";
 }

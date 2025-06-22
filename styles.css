@@ -803,6 +803,34 @@ body {
   text-align: center;
 }
 
+.status-updater {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.status-updater h4 {
+  margin-bottom: 0.5rem;
+}
+
+.status-updater select {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.status-updater button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
 @keyframes strokeCircle {
   to {
     stroke-dashoffset: 0;
