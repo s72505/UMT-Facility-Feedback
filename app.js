@@ -291,6 +291,12 @@ function closeModal() {
 
 // Capture photo from camera
 function capturePhoto() {
+  if (!cameraView.videoWidth || !cameraView.videoHeight) {
+    console.error("Camera view is not ready or has zero dimensions.");
+    showToast("Camera is not ready, please try again.", "error");
+    return;
+  }
+
   const context = canvas.getContext("2d");
   canvas.width = cameraView.videoWidth;
   canvas.height = cameraView.videoHeight;
@@ -298,7 +304,7 @@ function capturePhoto() {
 
   canvas.toBlob(
     (blob) => {
-      // Add this check to prevent the error
+      // The check from the previous step is still useful as a fallback
       if (!blob) {
         console.error("Canvas to Blob conversion failed. The blob is null.");
         showToast("Failed to capture photo. Please try again.", "error");
@@ -799,20 +805,23 @@ document
   .getElementById("refresh-map-btn")
   .addEventListener("click", loadReportsOnMap);
 
+// In app.js
 function showToast(message, type = "info") {
   Toastify({
     text: message,
     duration: 3000,
     gravity: "top",
     position: "right",
-    backgroundColor:
-      type === "success"
-        ? "#27ae60"
-        : type === "error"
-        ? "#e74c3c"
-        : type === "warning"
-        ? "#f39c12"
-        : "#3498db",
+    style: {
+      background:
+        type === "success"
+          ? "#27ae60"
+          : type === "error"
+          ? "#e74c3c"
+          : type === "warning"
+          ? "#f39c12"
+          : "#3498db",
+    },
     stopOnFocus: true,
     close: true,
   }).showToast();
