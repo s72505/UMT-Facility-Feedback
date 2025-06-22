@@ -851,20 +851,43 @@ body {
   z-index: 1000; /* Ensure it's on top of the map */
 }
 
-.camera-controls-overlay {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  z-index: 10;
+/* New container for the buttons at the bottom of the camera modal */
+.camera-bottom-controls {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
 }
 
-#switch-camera-btn {
-  background-color: rgba(44, 62, 80, 0.7);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  width: 45px;
-  height: 45px;
+/* This is the container for the two buttons at the bottom */
+.camera-bottom-controls {
+  display: flex;      /* Aligns children (buttons) in a row */
+  gap: 0.5rem;        /* Adds a small space between the buttons */
+  margin-top: 1rem;   /* Adds space above the buttons */
+}
+
+/* This targets the "Capture Photo" button specifically inside the new container */
+.camera-bottom-controls #capture-btn {
+  width: auto;        /* This overrides the old width: 100% */
+  flex-grow: 1;       /* This makes the button grow to fill all available space */
+}
+
+/* This targets the "Switch Camera" button specifically inside the new container */
+.camera-bottom-controls #switch-camera-btn {
+  flex-shrink: 0;     /* Prevents this button from shrinking */
+  width: 55px;        /* Sets a fixed width to make it a square */
+  aspect-ratio: 1 / 1;/* Enforces the 1:1 square shape */
   font-size: 1.5rem;
+  padding: 0;         /* Reset padding for better icon alignment */
+
+  /* These styles are to ensure it looks consistent */
+  background-color: var(--dark-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
 @keyframes strokeCircle {
