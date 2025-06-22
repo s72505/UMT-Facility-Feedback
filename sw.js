@@ -1,6 +1,4 @@
-const CACHE_NAME = "umt-facility-reporter-v10";
-// In sw.js
-// const CACHE_NAME = "umt-facility-reporter-v2"; // Changed version
+const CACHE_NAME = "umt-facility-reporter-v12"; // Updated version to v12
 const ASSETS_TO_CACHE = [
   "/",
   "/index.html",

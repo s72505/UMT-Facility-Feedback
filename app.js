@@ -303,7 +303,6 @@ function capturePhoto() {
   canvas.height = cameraView.videoHeight;
   context.drawImage(cameraView, 0, 0, canvas.width, canvas.height);
 
-  // --- THIS IS THE NEW IMPLEMENTATION ---
   // Directly get the data URL string from the canvas.
   const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
 
@@ -758,7 +757,7 @@ function checkPWAInstallPrompt() {
     const installPrompt = document.createElement("div");
     installPrompt.id = "install-prompt";
     installPrompt.innerHTML = `
-      <span>Install UMT Facility Reporter for a better experience</span>
+      <span>Install UMT Facility Feedback Reporter for a better experience</span>
       <div class="install-prompt-actions">
         <button id="install-btn">Install</button>
         <button id="close-prompt-btn" aria-label="Close">&times;</button>

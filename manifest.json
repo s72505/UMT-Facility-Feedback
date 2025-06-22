@@ -1,11 +1,11 @@
 {
-  "name": "UMT Facility Feedback",
+  "name": "UMT Facility Feedback Reporter",
   "short_name": "UMTFeedback",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#2c3e50",
   "theme_color": "#3498db",
-  "description": "Report campus facility issues with location and photos",
+  "description": "A student-driven platform to report dissatisfaction with campus facilities—pin issues, attach photos, and track follow-ups.",
   "orientation": "portrait",
   "icons": [
     {
