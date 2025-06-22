@@ -88,10 +88,13 @@ function setupEventListeners() {
       navigateTo(page);
       toggleSideNav();
     });
+  }); // <-- THE FOREACH LOOP ENDS HERE
 
-    // Handle click for the "current location" button inside the location modal
+  // --- THIS IS THE CORRECT PLACEMENT ---
+  // Handle click for the "current location" button inside the location modal
   document.getElementById("modal-current-location-btn").addEventListener("click", () => {
     if (navigator.geolocation) {
+      // The toast is already shown by initLocationMap, so we don't need another one here.
       showToast("Finding your location...", "info");
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -112,7 +115,6 @@ function setupEventListeners() {
       );
     }
   });
-});
 
   // Landing Page
   document.getElementById("go-to-report").addEventListener("click", () => navigateTo("report-issue"));
