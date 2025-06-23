@@ -1,0 +1,30 @@
+[33md17c928[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m Add support for safe area insets on mobile devices
+[33meed3ea3[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Integrate Capacitor Camera and Geolocation plugins
+[33mdfda961[m Remove marker reference from report object and update cache version
+[33mc764039[m Update camera button hover styles and cache version
+[33m11c1c7f[m Update camera modal button styles and bump cache version
+[33m0d05519[m Refactor camera modal button layout and styles
+[33m1babeb7[m Add camera switch functionality to report form
+[33mc093476[m Fix event listener placement and update cache version
+[33md845a7d[m Add 'use current location' button to location modal
+[33mcbbff74[m Update map button titles and cache version
+[33m630b3a0[m Add countdown timer to PWA install prompt
+[33maccfead[m Add report status update feature in modal
+[33mdef37e4[m Update app name to 'UMT Facility Feedback Reporter'
+[33m0989991[m Refactor photo capture to use canvas data URL
+[33m153cb81[m Improve camera capture error handling and toast styling
+[33m7f286df[m Handle null blob in capturePhoto to prevent errors
+[33m92c04c8[m Refactor landing page centering and card layout
+[33ma8c1ee3[m Enhance PWA install prompt with custom UI and close button
+[33m4457e30[m Update landing page layout for responsiveness
+[33m06dc176[m Add new app icons and update manifest names
+[33mfb92dbe[m Add 'My Reports' card to landing page
+[33m4ffd60f[m Make app title clickable to return to home
+[33me1a62f9[m Make logo clickable to navigate to home page
+[33m78f62ff[m fix landing page
+[33m2b848b5[m landing page
+[33ma57d1af[m Revert
+[33m1307c61[m Revert
+[33mbffe153[m 2nd Commit
+[33m0985c98[m Initial Commit
+[33m25845e8[m Initial commit
