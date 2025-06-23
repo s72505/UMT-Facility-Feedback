@@ -45,6 +45,8 @@ const locationMapElement = document.getElementById("location-map");
 const confirmLocationBtn = document.getElementById("confirm-location-btn");
 const reportDetailsModal = document.getElementById("report-details-modal");
 const reportDetailsContent = document.getElementById("report-details-content");
+const { Camera, CameraResultType, CameraSource } = Capacitor.Plugins;
+const { Geolocation } = Capacitor.Plugins;
 
 // App State
 // let currentPage = "landing-page";
@@ -142,10 +144,24 @@ function setupEventListeners() {
   // Report Form
   reportForm.addEventListener("submit", submitReport);
   cameraBtn.addEventListener("click", () => {
-    currentFacingMode = "user"; // Default to front camera when first opening
-    openCamera(currentFacingMode);
+    // Ensure you have Capacitor.Plugins defined before using its properties
+    if (window.Capacitor && Capacitor.Plugins.Camera) {
+      getPhoto(Capacitor.Plugins.CameraSource.Camera);
+    } else {
+      // Fallback for web if needed
+      showToast("Camera function not available in web view.", "error");
+    }
   });
-  galleryBtn.addEventListener("click", () => fileInput.click());
+  galleryBtn.addEventListener("click", () => {
+    // Ensure you have Capacitor.Plugins defined before using its properties
+    if (window.Capacitor && Capacitor.Plugins.Camera) {
+      getPhoto(Capacitor.Plugins.CameraSource.Photos);
+    } else {
+      // Fallback for web, clicks the hidden file input
+      fileInput.click();
+    }
+  });
+  
   fileInput.addEventListener("change", handleFileSelect);
   selectLocationBtn.addEventListener("click", openLocationPicker);
 
@@ -240,28 +256,46 @@ function initLocationMap() {
 }
 
 // Center map on user's location
-function centerMapOnUser() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const userLocation = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        };
-        map.setView(userLocation, 18);
-        L.marker(userLocation)
-          .addTo(map)
-          .bindPopup("Your current location")
-          .openPopup();
-      },
-      (error) => {
-        showToast("Unable to get your location: " + error.message, "error");
-      }
-    );
-  } else {
-    showToast("Geolocation is not supported by your browser", "error");
+async function centerMapOnUser() {
+  try {
+    // Use the Capacitor Geolocation plugin
+    const position = await Geolocation.getCurrentPosition();
+    const userLocation = {
+      lat: position.coords.latitude,
+      lng: position.coords.longitude,
+    };
+    map.setView(userLocation, 18);
+    L.marker(userLocation)
+      .addTo(map)
+      .bindPopup("Your current location")
+      .openPopup();
+  } catch (error) {
+    console.error("Error getting location", error);
+    showToast("Could not get your location: " + error.message, "error");
   }
 }
+// function centerMapOnUser() {
+//   if (navigator.geolocation) {
+//     navigator.geolocation.getCurrentPosition(
+//       (position) => {
+//         const userLocation = {
+//           lat: position.coords.latitude,
+//           lng: position.coords.longitude,
+//         };
+//         map.setView(userLocation, 18);
+//         L.marker(userLocation)
+//           .addTo(map)
+//           .bindPopup("Your current location")
+//           .openPopup();
+//       },
+//       (error) => {
+//         showToast("Unable to get your location: " + error.message, "error");
+//       }
+//     );
+//   } else {
+//     showToast("Geolocation is not supported by your browser", "error");
+//   }
+// }
 
 // Check geolocation permissions
 function checkGeolocation() {
@@ -316,38 +350,68 @@ function toggleSideNav() {
 }
 
 // Open camera modal
-function openCamera(facingMode = "user") {
-  // Stop any existing camera stream before starting a new one
-  if (stream) {
-    stream.getTracks().forEach((track) => {
-      track.stop();
-    });
+async function getPhoto(source) {
+  // Check if the Capacitor Camera plugin is available
+  if (!Capacitor.Plugins.Camera) {
+    // If running as a standard PWA in a browser, fall back to the web file input
+    if (source === Capacitor.Plugins.CameraSource.Photos) {
+      fileInput.click();
+    } else {
+      showToast("Camera is only available in the native app.", "error");
+    }
+    return;
   }
 
-  const constraints = {
-    video: {
-      facingMode: { exact: facingMode },
-    },
-  };
+  const { Camera, CameraResultType, CameraSource } = Capacitor.Plugins;
 
-  // Show the modal immediately
-  cameraModal.style.display = "flex";
-
-  navigator.mediaDevices
-    .getUserMedia(constraints)
-    .then((mediaStream) => {
-      stream = mediaStream;
-      cameraView.srcObject = stream;
-    })
-    .catch((err) => {
-      console.error("Error accessing camera:", err);
-      showToast(
-        `Could not access ${facingMode} camera. It may not be available on this device.`,
-        "error"
-      );
-      // If one camera fails, don't just close the modal. The other might still work.
+  try {
+    const image = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: false,
+      resultType: CameraResultType.DataUrl, // Returns a permanent data: URL
+      source: source, // Use the source passed into the function (Camera or Photos)
     });
+
+    addImageToPreview(image.dataUrl);
+
+  } catch (error) {
+    // Catches errors if the user cancels or denies permission
+    console.error("User cancelled or denied permission.", error);
+    showToast("No photo selected.", "warning");
+  }
 }
+// function openCamera(facingMode = "user") {
+//   // Stop any existing camera stream before starting a new one
+//   if (stream) {
+//     stream.getTracks().forEach((track) => {
+//       track.stop();
+//     });
+//   }
+
+//   const constraints = {
+//     video: {
+//       facingMode: { exact: facingMode },
+//     },
+//   };
+
+//   // Show the modal immediately
+//   cameraModal.style.display = "flex";
+
+//   navigator.mediaDevices
+//     .getUserMedia(constraints)
+//     .then((mediaStream) => {
+//       stream = mediaStream;
+//       cameraView.srcObject = stream;
+//     })
+//     .catch((err) => {
+//       console.error("Error accessing camera:", err);
+//       showToast(
+//         `Could not access ${facingMode} camera. It may not be available on this device.`,
+//         "error"
+//       );
+//       // If one camera fails, don't just close the modal. The other might still work.
+//     });
+// }
 
 // Close any modal
 function closeModal() {
