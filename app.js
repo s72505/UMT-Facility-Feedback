@@ -673,8 +673,6 @@ function addReportToMap(report) {
     minWidth: 200,
   });
 
-  // Store marker reference in the report object
-  report.marker = marker;
 }
 // Render reports list
 function renderReportsList(filter = "all") {
@@ -787,7 +785,6 @@ function viewReportDetails(reportId) {
 
   const date = new Date(report.date);
 
-  // --- UPDATED PART ---
   // The innerHTML now includes a form to update the status
   reportDetailsContent.innerHTML = `
     <div class="report-details">
