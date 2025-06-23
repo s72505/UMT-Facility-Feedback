@@ -940,3 +940,21 @@ body {
   font-weight: 600;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
 }
+
+@media (max-width: 480px) {
+
+  /* Reduce the font size of the main title on small screens */
+  .app-header h1 {
+    font-size: 1.2rem;
+  }
+
+  /* Reduce the size of the logo slightly */
+  .app-logo {
+    height: 35px;
+  }
+
+  /* Reduce the gap between the menu button, logo, and title */
+  .header-left {
+    gap: 0.5rem;
+  }
+}
