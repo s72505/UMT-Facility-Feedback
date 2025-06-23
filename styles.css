@@ -24,6 +24,10 @@ body {
 }
 
 .app-container {
+  padding-top: env(safe-area-inset-top);
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
   display: flex;
   flex-direction: column;
   min-height: 100vh;
