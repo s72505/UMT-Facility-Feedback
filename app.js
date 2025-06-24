@@ -45,6 +45,7 @@ const locationMapElement = document.getElementById("location-map");
 const confirmLocationBtn = document.getElementById("confirm-location-btn");
 const reportDetailsModal = document.getElementById("report-details-modal");
 const reportDetailsContent = document.getElementById("report-details-content");
+const themeSwitch = document.getElementById("theme-switch"); 
 
 // App State
 // let currentPage = "landing-page";
@@ -58,6 +59,8 @@ let currentFacingMode = "user"; // Default to user-facing camera
 
 // Initialize the app
 function initApp() {
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  setTheme(savedTheme);
   setupEventListeners();
   loadReports();
   initMap();
@@ -65,6 +68,17 @@ function initApp() {
   checkPWAInstallPrompt();
 }
 
+  function setTheme(theme) {
+    localStorage.setItem('theme', theme); // Save preference
+    if (theme === 'dark') {
+      document.body.classList.add('dark-mode');
+      themeSwitch.checked = true;
+    } else {
+      document.body.classList.remove('dark-mode');
+      themeSwitch.checked = false;
+    }
+  }
+  
 // Set up event listeners
 function setupEventListeners() {
   document
@@ -91,7 +105,6 @@ function setupEventListeners() {
     });
   }); // <-- THE FOREACH LOOP ENDS HERE
 
-  // --- THIS IS THE CORRECT PLACEMENT ---
   // Handle click for the "current location" button inside the location modal
   document.getElementById("modal-current-location-btn").addEventListener("click", () => {
     if (navigator.geolocation) {
@@ -163,6 +176,14 @@ function setupEventListeners() {
     btn.addEventListener("click", () =>
       filterReports(btn.getAttribute("data-status"))
     );
+  });
+
+  themeSwitch.addEventListener('change', () => {
+    if (themeSwitch.checked) {
+      setTheme('dark');
+    } else {
+      setTheme('light');
+    }
   });
 }
 
