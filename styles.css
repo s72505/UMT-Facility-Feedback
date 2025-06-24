@@ -668,7 +668,7 @@ body {
 .map-marker-pin {
   width: 20px;
   height: 20px;
-  background: var(--primary-color);
+  /* background: var(--primary-color); */
   position: absolute;
   bottom: 0;
   left: 10px;
@@ -1083,4 +1083,51 @@ body.dark-mode .form-group select,
 body.dark-mode .form-group textarea {
   color: var(--dark-color); /* Sets the text color to light */
   border-color: #4a5568; /* A slightly darker border for better contrast */
+}
+
+/* --- Map Legend Styles --- */
+#map-legend {
+  position: absolute;
+  bottom: 2rem;
+  left: 1rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  z-index: 500; /* Above the map, below FABs */
+}
+
+#map-legend h4 {
+  margin: 0 0 0.5rem 0;
+  text-align: center;
+  font-size: 1rem;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 0.25rem;
+}
+
+#map-legend ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#map-legend li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.25rem;
+  font-size: 0.9rem;
+}
+
+.legend-color-box {
+  width: 15px;
+  height: 15px;
+  border-radius: 4px;
+  margin-right: 0.5rem;
+  border: 1px solid #777;
+}
+
+/* Dark mode styles for the legend */
+body.dark-mode #map-legend {
+    background-color: rgba(45, 55, 72, 0.9);
+    border: 1px solid #718096;
 }

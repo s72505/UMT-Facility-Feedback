@@ -1,4 +1,4 @@
-const CACHE_NAME = "umt-facility-reporter-v24"; 
+const CACHE_NAME = "umt-facility-reporter-v25"; 
 const ASSETS_TO_CACHE = [
   "/",
   "/index.html",

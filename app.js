@@ -56,6 +56,13 @@ let reports = [];
 let map, locationMap;
 let stream = null;
 let currentFacingMode = "user"; // Default to user-facing camera
+const categoryColors = {
+  electrical: '#E74C3C',  // Red
+  plumbing: '#3498DB',    // Blue
+  furniture: '#9B59B6',   // Purple
+  cleanliness: '#2ECC71', // Green
+  other: '#7F8C8D'        // Gray
+};
 
 // Initialize the app
 function initApp() {
@@ -79,6 +86,18 @@ function initApp() {
     }
   }
   
+  function renderMapLegend() {
+  const legend = document.getElementById('map-legend');
+  let content = '<h4>Legend</h4><ul>';
+  for (const category in categoryColors) {
+    const color = categoryColors[category];
+    const name = category.charAt(0).toUpperCase() + category.slice(1);
+    content += `<li><span class="legend-color-box" style="background-color: ${color}"></span> ${name}</li>`;
+  }
+  content += '</ul>';
+  legend.innerHTML = content;
+  }
+
 // Set up event listeners
 function setupEventListeners() {
   document
@@ -214,6 +233,7 @@ function initMap() {
 
   // Load any existing reports on the map
   loadReportsOnMap();
+  renderMapLegend(); // Render the legend on map initialization
 }
 
 // Initialize location picker map
@@ -633,54 +653,36 @@ function loadReportsOnMap() {
 
 // Add a report to the map
 function addReportToMap(report) {
-  // Create a custom icon with the first image as a thumbnail
+  // Get the appropriate color from our new constant, defaulting to 'other'
+  const pinColor = categoryColors[report.category] || categoryColors.other;
+
+  // Create a custom icon with the first image and a dynamically colored pin
   const iconHtml = `
     <div class="map-marker-container">
       <img src="${report.images[0]}" class="map-marker-image">
-      <div class="map-marker-pin"></div>
+      <div class="map-marker-pin" style="background-color: ${pinColor};"></div>
     </div>
   `;
 
   const marker = L.marker([report.location.lat, report.location.lng], {
     icon: L.divIcon({
       html: iconHtml,
-      iconSize: [40, 50], // Width, height
+      iconSize: [40, 50],
       className: "custom-marker-icon",
     }),
   }).addTo(map);
 
-  // Set status color for the pin
-  let statusColor;
-  switch (report.status) {
-    case "submitted":
-      statusColor = "#f39c12";
-      break;
-    case "in-progress":
-      statusColor = "#3498db";
-      break;
-    case "resolved":
-      statusColor = "#2ecc71";
-      break;
-    default:
-      statusColor = "#7f8c8d";
-  }
-
-  // Update popup content to show all images
+  // The popup content can remain the same
   let popupContent = `
     <div class="map-popup">
       <h4>${report.title}</h4>
       <p><strong>Category:</strong> ${report.category}</p>
-      <p><strong>Status:</strong> <span style="color:${statusColor}">${report.status.replace(
-    "-",
-    " "
-  )}</span></p>
+      <p><strong>Status:</strong> ${report.status.replace("-"," ")}</p>
       <div class="popup-images">
   `;
-
   report.images.forEach((img) => {
     popupContent += `<img src="${img}" class="popup-image" onclick="viewImageInModal('${img}')">`;
   });
-
   popupContent += `
       </div>
       <button onclick="viewReportDetails(${report.id})" class="popup-details-btn">
@@ -693,9 +695,8 @@ function addReportToMap(report) {
     maxWidth: 300,
     minWidth: 200,
   });
-
-
 }
+
 // Render reports list
 function renderReportsList(filter = "all") {
   reportsList.innerHTML = "";
