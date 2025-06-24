@@ -1,78 +1,76 @@
+<!--
+  ============================================================================
+  UMT Facility Feedback Reporter – Main HTML Shell
+  ----------------------------------------------------------------------------
+  Comments have been added to every major block to explain purpose and flow.
+  No markup, IDs, classes, or attributes were changed – only comments/spacing.
+  ============================================================================
+-->
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Meta & Title -->
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0", viewport-fit="cover"/>
+    <!-- viewport-fit="cover" keeps content behind iOS notches & Android cut-outs -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" , viewport-fit="cover" />
     <title>UMT Facility Feedback Reporter</title>
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="192x192"
-      href="icons/icon-192x192.png"
-    />
+
+    <!-- PWA & Icons -->
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192x192.png" />
     <link rel="manifest" href="manifest.json" />
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-    />
+
+    <!-- External Stylesheets -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <link rel="stylesheet" href="styles.css" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
   </head>
+
   <body>
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         Top-level Application Container (flex column layout)
+         ═════════════════════════════════════════════════════════════════════ -->
     <div class="app-container">
+
+      <!-- ─────────────────────────── HEADER ─────────────────────────────── -->
       <header class="app-header">
         <div class="header-left">
           <button id="menu-btn">☰</button>
-          <img src="icons/logo.png" alt="UMT Logo" class="app-logo" id="logo-btn"/>
+          <img src="icons/logo.png" alt="UMT Logo" class="app-logo" id="logo-btn" />
           <h1 id="title-btn">UMT Facility Feedback Reporter</h1>
         </div>
       </header>
 
+      <!-- ─────────────────────────── SIDE-NAV ────────────────────────────── -->
       <nav id="side-nav" class="side-nav">
         <button id="close-nav-btn">&times;</button>
+
+        <!-- Main navigation links -->
         <ul>
-          <li>
-            <a href="#" class="nav-link" data-page="map-view"
-              >Map View</a
-            >
-          </li>
-          <li>
-            <a href="#" class="nav-link" data-page="report-issue"
-              >Report Issue</a
-            >
-          </li>
-          <li>
-            <a href="#" class="nav-link" data-page="my-reports">My Reports</a>
-          </li>
-          <li>
-            <a href="#" class="nav-link" data-page="gallery">Photo Gallery</a>
-          </li>
+          <li><a href="#" class="nav-link" data-page="map-view">Map View</a></li>
+          <li><a href="#" class="nav-link" data-page="report-issue">Report Issue</a></li>
+          <li><a href="#" class="nav-link" data-page="my-reports">My Reports</a></li>
+          <li><a href="#" class="nav-link" data-page="gallery">Photo Gallery</a></li>
           <li><a href="#" class="nav-link" data-page="about">About</a></li>
 
+          <!-- Dark-mode toggle -->
           <li>
             <div class="theme-switch-wrapper">
               <span>Dark Mode</span>
               <label class="theme-switch">
-                <input type="checkbox" id="theme-switch">
+                <input type="checkbox" id="theme-switch" />
                 <span class="slider round"></span>
               </label>
             </div>
           </li>
-
         </ul>
       </nav>
 
+      <!-- ─────────────────────────── MAIN PAGES ──────────────────────────── -->
       <main class="main-content">
 
-        <!-- Landing Page -->
+        <!-- ░░░░░ Landing Page ░░░░░ -->
         <div id="landing-page" class="page active-page">
           <div class="landing-page-container">
             <div class="landing-card" id="go-to-report">
@@ -90,26 +88,32 @@
           </div>
         </div>
 
-        <!-- Map View -->
+        <!-- ░░░░░ Map View ░░░░░ -->
         <div id="map-view" class="page">
-              <div id="map"></div>
-              
-              <div id="map-legend"></div>
-              
-              <button id="current-location-btn" class="fab" title="Current Location">📍</button>
-              <button id="refresh-map-btn" class="fab" title="Refresh Map">🔄</button>
-              <button id="new-report-btn" class="fab primary" title="New Report">+</button>
+          <!-- Leaflet map container -->
+          <div id="map"></div>
+
+          <!-- Legend overlay (built dynamically) -->
+          <div id="map-legend"></div>
+
+          <!-- Floating-action buttons -->
+          <button id="current-location-btn" class="fab"    title="Current Location">📍</button>
+          <button id="refresh-map-btn"       class="fab"    title="Refresh Map">🔄</button>
+          <button id="new-report-btn"        class="fab primary" title="New Report">+</button>
         </div>
 
-        <!-- Report Issue -->
+        <!-- ░░░░░ Report Issue Form ░░░░░ -->
         <div id="report-issue" class="page">
           <h2>Report Facility Issue</h2>
+
           <form id="report-form">
+            <!-- Issue title -->
             <div class="form-group">
               <label for="issue-title">Title</label>
               <input type="text" id="issue-title" required />
             </div>
 
+            <!-- Category dropdown -->
             <div class="form-group">
               <label for="issue-category">Category</label>
               <select id="issue-category" required>
@@ -122,76 +126,67 @@
               </select>
             </div>
 
+            <!-- Description -->
             <div class="form-group">
               <label for="issue-description">Description</label>
               <textarea id="issue-description" rows="4" required></textarea>
             </div>
 
+            <!-- Photo upload (camera or gallery) -->
             <div class="form-group">
               <label>Add Photos (Max 5)</label>
-              <div class="image-preview-container" id="image-preview">
-                <!-- Images will appear here -->
-              </div>
+              <div class="image-preview-container" id="image-preview"><!-- thumbnails injected here --></div>
+
               <div class="image-controls">
                 <button type="button" id="camera-btn">📷 Camera</button>
                 <button type="button" id="gallery-btn">🖼️ Gallery</button>
-                <input
-                  type="file"
-                  id="file-input"
-                  accept="image/*"
-                  style="display: none"
-                  multiple
-                />
+                <!-- hidden file picker -->
+                <input type="file" id="file-input" accept="image/*" style="display:none" multiple />
               </div>
             </div>
 
+            <!-- Location picker -->
             <div class="form-group">
               <div id="location-display">Location: Not selected</div>
-              <button type="button" id="select-location-btn">
-                Select on Map
-              </button>
+              <button type="button" id="select-location-btn">Select on Map</button>
             </div>
 
+            <!-- Submit -->
             <button type="submit" class="submit-btn">Submit Report</button>
           </form>
         </div>
 
-        <!-- My Reports -->
+        <!-- ░░░░░ My Reports ░░░░░ -->
         <div id="my-reports" class="page">
           <h2>My Reports</h2>
+
+          <!-- Status filter pills -->
           <div class="status-filter">
             <button class="filter-btn active" data-status="all">All</button>
-            <button class="filter-btn" data-status="submitted">
-              Submitted
-            </button>
-            <button class="filter-btn" data-status="in-progress">
-              In Progress
-            </button>
+            <button class="filter-btn" data-status="submitted">Submitted</button>
+            <button class="filter-btn" data-status="in-progress">In Progress</button>
             <button class="filter-btn" data-status="resolved">Resolved</button>
           </div>
-          <div id="reports-list" class="reports-list">
-            <!-- Reports will be dynamically added here -->
-          </div>
+
+          <!-- Dynamic list -->
+          <div id="reports-list" class="reports-list"><!-- cards injected here --></div>
         </div>
 
-        <!-- Photo Gallery -->
+        <!-- ░░░░░ Photo Gallery ░░░░░ -->
         <div id="gallery" class="page">
           <h2>Photo Gallery</h2>
-          <div id="gallery-container" class="gallery-container">
-            <!-- Gallery items will be added here -->
-          </div>
+          <div id="gallery-container" class="gallery-container"><!-- images injected here --></div>
         </div>
 
-        <!-- About Page -->
+        <!-- ░░░░░ About ░░░░░ -->
         <div id="about" class="page">
           <h2>About UMT Facility Feedback Reporter</h2>
           <div class="about-content">
-            <p>
-              This app allows UMT students to report facility issues on campus
-              with photos and location tagging.
-            </p>
+            <p>This app allows UMT students to report facility issues on campus with photos and location tagging.</p>
             <p>Version: 1.0.0</p>
             <p>Developed by: Group 10</p>
+
+            <!-- Team members list -->
             <div class="team-members">
               <h3>Team Members:</h3>
               <ul>
@@ -205,27 +200,31 @@
         </div>
       </main>
 
-      <!-- Camera Modal -->
+      <!-- ─────────────────────────── MODALS ─────────────────────────────── -->
+
+      <!-- Camera Modal (uses getUserMedia) -->
       <div id="camera-modal" class="modal">
         <div class="modal-content">
           <span class="close-modal">&times;</span>
           <video id="camera-view" autoplay></video>
-          
+
           <div class="camera-bottom-controls">
             <button id="capture-btn">Capture Photo</button>
             <button id="switch-camera-btn" title="Switch Camera">🔄</button>
           </div>
 
-          <canvas id="canvas" style="display: none"></canvas>
+          <!-- off-screen canvas for snapshot processing -->
+          <canvas id="canvas" style="display:none"></canvas>
         </div>
       </div>
 
-      <!-- Location Selection Modal -->
+      <!-- Location Picker Modal -->
       <div id="location-modal" class="modal">
         <div class="modal-content">
           <span class="close-modal">&times;</span>
           <h3>Select Location on Map</h3>
-          <div id="location-map"></div>
+          <div id="location-map"><!-- Leaflet map inserted here --></div>
+
           <button id="modal-current-location-btn" class="fab modal-fab" title="Use My Current Location">📍</button>
           <button id="confirm-location-btn">Confirm Location</button>
         </div>
@@ -236,11 +235,12 @@
         <div class="modal-content">
           <span class="close-modal">&times;</span>
           <h3 id="report-details-title">Report Details</h3>
-          <div id="report-details-content"></div>
+          <div id="report-details-content"><!-- filled dynamically --></div>
         </div>
       </div>
     </div>
 
+    <!-- ─────────────────────────── Scripts ─────────────────────────────── -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="app.js"></script>
