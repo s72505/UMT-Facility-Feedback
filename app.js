@@ -86,6 +86,9 @@ let reports         = [];         // array of report objects (loaded from LS)
 let map, locationMap;             // Leaflet map instances
 let stream          = null;       // MediaStream from getUserMedia
 let currentFacingMode = "user";   // 'user' (selfie) vs 'environment' (rear)
+let touchStartX     = 0;          // touch start X position
+let touchCurrentX   = 0;          // touch current X position
+let isSwiping       = false;       // flag for swipe detection
 
 // Colour codes for category-specific map pins
 const categoryColors = {
@@ -166,7 +169,12 @@ function setupEventListeners() {
     setTimeout(() => (this.innerHTML = "🔄"), 1000);
   });
 
-
+  // ── Close nav when clicking main content ──────────────────────────────
+  document.querySelector(".main-content").addEventListener("click", () => {
+    if (sideNav.classList.contains("active")) {
+      toggleSideNav();
+    }
+  });
 
   // ── Side-nav show / hide ───────────────────────────────────────────────
   menuBtn.addEventListener("click",  toggleSideNav);
@@ -268,6 +276,12 @@ function setupEventListeners() {
   themeSwitch.addEventListener('change', () =>
     setTheme(themeSwitch.checked ? 'dark' : 'light')
   );
+
+    // ── Swipe-to-close for side-nav ───────────────────────────────────────
+  sideNav.addEventListener("touchstart", handleTouchStart, { passive: true });
+  sideNav.addEventListener("touchmove", handleTouchMove, { passive: true });
+  sideNav.addEventListener("touchend", handleTouchEnd);
+
 }
 
 
@@ -409,7 +423,66 @@ function navigateTo(page) {
 // ─────────────────────────────────────────────────────────────────────────────
 function toggleSideNav() { sideNav.classList.toggle("active"); }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// handleTouchStart(e)
+// Records the starting horizontal position of a touch on the side-nav.
+// ─────────────────────────────────────────────────────────────────────────────
+function handleTouchStart(e) {
+  if (!sideNav.classList.contains("active")) return;
+  touchStartX = e.touches[0].clientX;
+  // A touch is not a swipe until the user moves their finger.
+}
 
+// ─────────────────────────────────────────────────────────────────────────────
+// handleTouchMove(e)
+// Updates the side-nav position based on how far the user has swiped.
+// ─────────────────────────────────────────────────────────────────────────────
+function handleTouchMove(e) {
+  // If a touch didn't start, or the nav is closed, do nothing.
+  if (touchStartX === 0 || !sideNav.classList.contains("active")) return;
+
+  touchCurrentX = e.touches[0].clientX;
+
+  // Once movement starts, we consider it a swipe.
+  if (!isSwiping) {
+    isSwiping = true;
+    sideNav.style.transition = 'none'; // Disable transition for smooth tracking
+  }
+
+  // Only allow swiping to the left (to close) and don't let it be pulled to the right.
+  const deltaX = touchCurrentX - touchStartX;
+  if (deltaX < 0) {
+    sideNav.style.transform = `translateX(${deltaX}px)`;
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// handleTouchEnd()
+// Determines whether to close the nav or snap it back open based on swipe distance.
+// ─────────────────────────────────────────────────────────────────────────────
+function handleTouchEnd() {
+  // Only run logic if a swipe was actually in progress.
+  if (!isSwiping) {
+    touchStartX = 0; // Reset for the next touch.
+    return;
+  }
+
+  const swipeThreshold = sideNav.offsetWidth * 0.5; // Must swipe 50% of the width
+  const deltaX = touchCurrentX - touchStartX;
+
+  // Re-enable the transition for a smooth animation
+  sideNav.style.transition = 'var(--transition)';
+  sideNav.style.transform = ''; // Clear the inline transform
+
+  if (deltaX < -swipeThreshold) {
+    toggleSideNav(); // Close the sidebar
+  }
+
+  // Reset swipe state for the next gesture
+  isSwiping = false;
+  touchStartX = 0;
+  touchCurrentX = 0;
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // openCamera(facingMode)
